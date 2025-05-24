@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>メルセデス・ベンツ：サッコデザインの軌跡</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Report Info: Production numbers for W123, W201, W124, W140.
+        - Goal: Compare production volumes.
+        - Viz/Presentation Method: Bar Chart.
+        - Interaction: Tooltips on hover.
+        - Justification: Clear visual comparison of quantitative data.
+        - Library/Method: Chart.js (Canvas).
+        - Report Info: Key features/philosophies of each model.
+        - Goal: Inform and allow detailed exploration.
+        - Viz/Presentation Method: Text blocks with expandable details (simplified to direct text for this version).
+        - Interaction: Click to expand/collapse (simplified to tab navigation).
+        - Justification: Manages information density, user-controlled depth.
+        - Library/Method: Vanilla JS for DOM manipulation.
+        - Report Info: Comparison of model specs (years, innovations).
+        - Goal: Compare attributes directly.
+        - Viz/Presentation Method: HTML Table.
+        - Interaction: Static table.
+        - Justification: Structured and direct comparison.
+        - Library/Method: HTML/Tailwind.
+        - CONFIRMING NO SVG/Mermaid. All diagrams/visuals via HTML/CSS/Tailwind or Canvas. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .nav-link { cursor: pointer; }
+        .tab-link { cursor: pointer; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px; /* Adjusted for better display */
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; /* Base height */
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        /* Additional styling for a slightly more refined look */
+        .nav-link, .tab-link {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .nav-link.active-nav, .tab-link.active-tab {
+            border-bottom-width: 2px;
+        }
+        h2 {
+            border-bottom: 2px solid #e5e7eb; /* Tailwind gray-200 */
+            padding-bottom: 0.5rem;
+        }
+        h3 {
+            border-bottom: 1px solid #f3f4f6; /* Tailwind gray-100 */
+            padding-bottom: 0.25rem;
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-neutral-800">
+
+    <header class="bg-slate-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <h1 class="text-3xl font-bold text-center md:text-left">メルセデス・ベンツ：サッコデザインの軌跡</h1>
+            <nav class="mt-4">
+                <ul class="flex flex-wrap justify-center md:justify-start space-x-2 md:space-x-4 text-sm md:text-base">
+                    <li><a class="nav-link hover:bg-slate-700 px-3 py-2 rounded-md active-nav border-sky-500" data-target="overview">概要</a></li>
+                    <li><a class="nav-link hover:bg-slate-700 px-3 py-2 rounded-md border-transparent hover:border-sky-500" data-target="designer">デザイナー紹介</a></li>
+                    <li><a class="nav-link hover:bg-slate-700 px-3 py-2 rounded-md border-transparent hover:border-sky-500" data-target="models">モデル詳細</a></li>
+                    <li><a class="nav-link hover:bg-slate-700 px-3 py-2 rounded-md border-transparent hover:border-sky-500" data-target="philosophy">デザイン哲学</a></li>
+                    <li><a class="nav-link hover:bg-slate-700 px-3 py-2 rounded-md border-transparent hover:border-sky-500" data-target="comparison">比較</a></li>
+                    <li><a class="nav-link hover:bg-slate-700 px-3 py-2 rounded-md border-transparent hover:border-sky-500" data-target="legacy">後世への影響</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+        <section id="overview" class="content-section active bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold mb-4 text-slate-700">概要へようこそ</h2>
+            <p class="mb-4 text-lg leading-relaxed">
+                このアプリケーションでは、メルセデス・ベンツの歴史において重要な役割を果たしたデザイナー、ブルーノ・サッコと彼が手掛けた象徴的なモデル群（W123, W201, W124, W140）について深く掘り下げます。
+                サッコのデザイン哲学、各モデルの開発背景、技術的特徴、市場での評価、そしてそれらが後世に与えた影響をインタラクティブに探求できます。
+            </p>
+            <p class="mb-4 leading-relaxed">
+                ブルーノ・サッコは、1975年から1999年までメルセデス・ベンツのデザイン責任者を務め、「水平的同質性」と「垂直的親和性」という哲学に基づき、ブランドのデザイン言語に一貫性と時代を超越した魅力を与えました。
+                彼の指揮のもとで生まれた車たちは、単なる移動手段ではなく、エンジニアリングと美学が高度に融合した芸術作品とも言えるでしょう。
+            </p>
+            <p class="leading-relaxed">
+                上のナビゲーションメニューから、興味のあるセクションを選択して、サッコのデザインの世界をご堪能ください。
+                「モデル詳細」では各車両を深く知ることができ、「比較」セクションでは主要モデルの生産台数をグラフで視覚的に比較できます。
+            </p>
+        </section>
+
+        <section id="designer" class="content-section bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold mb-4 text-slate-700">デザイナー紹介：ブルーノ・サッコ</h2>
+            <p class="mb-4 text-lg leading-relaxed">
+                ブルーノ・サッコ（1933年 - 2023年）は、イタリア出身の自動車デザイナーであり、メルセデス・ベンツのデザイン部門を長年にわたり率いました。
+                彼のデザイン哲学は、メルセデス・ベンツのブランドイメージを確固たるものにし、数々の名車を世に送り出しました。
+            </p>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-sky-600">主要なデザイン哲学</h3>
+                    <ul class="list-disc list-inside space-y-1 pl-4">
+                        <li><strong>水平的同質性 (Horizontal Homogeneity):</strong> どのモデルであっても一目でメルセデス・ベンツと分かる統一感を重視。サイズやクラスが異なっても、共通のデザイン言語やブランドアイデンティティを共有することを目指しました。</li>
+                        <li><strong>垂直的親和性 (Vertical Affinity):</strong> 世代を超えてデザインの連続性を保ち、新型車が登場しても旧型車が陳腐化しないように配慮。モデルチェンジは革命ではなく進化であるべきとし、長期的な視点でのデザイン価値を追求しました。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-sky-600">サッコの言葉</h3>
+                    <blockquote class="border-l-4 border-slate-500 pl-4 italic text-neutral-600">
+                        「メルセデス・ベンツは常にメルセデス・ベンツらしくなければならない。」
+                    </blockquote>
+                    <blockquote class="border-l-4 border-slate-500 pl-4 mt-2 italic text-neutral-600">
+                        「メルセデスのデザインは10年後、20年後、50年後に見てもなお魅力的であるべきだ。」
+                    </blockquote>
+                </div>
+                <p class="leading-relaxed">
+                    サッコはまた、機能と美の調和を重視し、デザインが車両の性能や使い勝手と矛盾しないことを追求しました。
+                    彼の指揮のもと、メルセデス・ベンツは空力性能の向上や安全設計とデザインの融合においても業界をリードしました。
+                    チームとしてのデザインを重んじ、自らを「オーケストラの指揮者」に例えたことも知られています。
+                </p>
+            </div>
+        </section>
+
+        <section id="models" class="content-section bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold mb-4 text-slate-700">モデル詳細</h2>
+            <p class="mb-6 text-lg leading-relaxed">
+                ブルーノ・サッコがそのデザインキャリアの中で手がけた、メルセデス・ベンツの象徴的なモデルたちを紹介します。
+                各モデルは、それぞれの時代背景、技術的挑戦、そしてサッコのデザイン哲学を色濃く反映しています。
+                以下のタブからモデルを選択して詳細をご覧ください。
+            </p>
+            <div class="mb-4 border-b border-gray-200">
+                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="modelTabs">
+                    <li class="mr-2"><a class="tab-link inline-block p-4 border-b-2 rounded-t-lg active-tab border-sky-500 text-sky-600" data-model-target="w123">W123</a></li>
+                    <li class="mr-2"><a class="tab-link inline-block p-4 border-b-2 rounded-t-lg border-transparent hover:text-gray-600 hover:border-gray-300" data-model-target="w201">W201 (190E)</a></li>
+                    <li class="mr-2"><a class="tab-link inline-block p-4 border-b-2 rounded-t-lg border-transparent hover:text-gray-600 hover:border-gray-300" data-model-target="w124">W124</a></li>
+                    <li><a class="tab-link inline-block p-4 border-b-2 rounded-t-lg border-transparent hover:text-gray-600 hover:border-gray-300" data-model-target="w140">W140</a></li>
+                </ul>
+            </div>
+
+            <div id="modelContentContainer" class="space-y-6">
+                <div id="w123" class="tab-content active">
+                    <h3 class="text-xl font-bold mb-3 text-sky-700">メルセデス・ベンツ W123 (1976年発売)</h3>
+                    <p class="mb-2"><strong>概要:</strong> W114/115シリーズの後継としてデビュー。総生産台数約270万台超を記録した大ヒットモデル。</p>
+                    <p class="mb-2"><strong>サッコの役割:</strong> 就任直後の最初の主要プロジェクトの一つ。彼の信念「メルセデスは常にメルセデスらしくあるべき」のもと、最終デザインを監修。</p>
+                    <p class="mb-2"><strong>設計思想:</strong> 「より良く、しかし急に変えすぎない」。信頼性、実用性を重視し、伝統と現代性のバランスを追求。</p>
+                    <p class="mb-2"><strong>エクステリア:</strong> 「伝統的でありながらモダン」。端正なプロポーション、大きなメッキグリル、角ばったラインと緩やかな曲面の調和。</p>
+                    <p class="mb-2"><strong>インテリア:</strong> 機能性と高級感を両立。水平基調のダッシュボード、人間工学に基づく操作系、上質な素材を使用。</p>
+                    <p class="mb-2"><strong>技術的特徴:</strong> 前輪ダブルウィッシュボーン/後輪セミトレーリングアームサスペンション。堅牢なガソリン/ディーゼルエンジン。後期にはABSも導入。「100万キロ走る」と称される機械的信頼性。</p>
+                    <p class="mb-2"><strong>市場評価:</strong> 高い信頼性、安全性、品質感で「エグゼクティブクラスの基準」と称賛。特にディーゼルモデルはタクシー等で圧倒的支持。</p>
+                    <p class="text-sm text-gray-600 mt-1">【画像イメージ】W123の代表的な写真</p>
+                </div>
+
+                <div id="w201" class="tab-content">
+                    <h3 class="text-xl font-bold mb-3 text-sky-700">メルセデス・ベンツ W201 (190E, 1982年発売)</h3>
+                    <p class="mb-2"><strong>概要:</strong> メルセデス初のコンパクトクラスセダン、「ベイビー・ベンツ」。約187万台を生産。</p>
+                    <p class="mb-2"><strong>サッコの役割:</strong> チーフデザイナーとして指揮。「最も気に入っているのは190」と語るほど思い入れが深い。小型車にメルセデスらしさを宿らせる使命を担う。</p>
+                    <p class="mb-2"><strong>設計思想:</strong> 「スケールダウンではなくイノベーションの凝縮」。新開発5リンク式リアサスペンションなど最新技術を投入。</p>
+                    <p class="mb-2"><strong>エクステリア:</strong> 「水平的な同質性」を重視しつつ独自のプロポーションを追求。シャープなウェッジシェイプ、Cd値0.33。機能美を強調し、後期にはサッコ・プレートも装着。</p>
+                    <p class="mb-2"><strong>インテリア:</strong> 小型車とは思えない質感と機能性。左右対称ダッシュボード、高張力鋼ボディによる高い安全性。</p>
+                    <p class="mb-2"><strong>技術的特徴:</strong> 革新的な5リンク式リアサスペンション。多様なエンジンラインナップ、高性能版2.3-16はDTMでも活躍。「過剰に工夫された」と評される。</p>
+                    <p class="mb-2"><strong>市場評価:</strong> 「小さな高級車」セグメントを確立。BMW 3シリーズに対し静粛性や高級感で優位。メルセデスのエンジニアリングと品質を凝縮した傑作と賞賛。</p>
+                    <p class="text-sm text-gray-600 mt-1">【画像イメージ】W201型「190E」の写真</p>
+                </div>
+
+                <div id="w124" class="tab-content">
+                    <h3 class="text-xl font-bold mb-3 text-sky-700">メルセデス・ベンツ W124 (1984年発表)</h3>
+                    <p class="mb-2"><strong>概要:</strong> W123の後継。1993年に「Eクラス」と命名。多彩なボディバリエーション。累計生産約250万台超。</p>
+                    <p class="mb-2"><strong>サッコの役割:</strong> 全面的に関与。「垂直的な親和性」を追求し、W123からの連続性と先進性を両立。W201のデザインをスケールアップし洗練。</p>
+                    <p class="mb-2"><strong>設計思想:</strong> 空力性能の大幅向上、軽量高剛性ボディ、多様なニーズへの対応、「メルセデスらしい格調の維持」。</p>
+                    <p class="mb-2"><strong>エクステリア:</strong> 直線基調ながらエレガント。Cd値0.28の低空気抵抗。滑らかなボディライン、単一アームワイパーが特徴。サッコ・プレートも採用。</p>
+                    <p class="mb-2"><strong>インテリア:</strong> 快適性と機能性の集大成。水平基調ダッシュボード、人間工学に基づく操作系、世界初の助手席エアバッグも実用化。「機能美」の極致。</p>
+                    <p class="mb-2"><strong>技術的特徴:</strong> 前ストラット/後5リンク式サスペンション。フルタイム4WD「4MATIC」初搭載。高性能版500E。先進的な電子制御5速ATも採用。</p>
+                    <p class="mb-2"><strong>市場評価:</strong> 「完璧に近い高級サルーン」。卓越した耐久性・信頼性でタクシー等にも大量採用。「一生乗れる車」とまで言われる。メルセデスの伝統と先進技術を高度に両立。</p>
+                     <p class="text-sm text-gray-600 mt-1">【画像イメージ】W124型「ミディアムクラス」の写真</p>
+                </div>
+
+                <div id="w140" class="tab-content">
+                    <h3 class="text-xl font-bold mb-3 text-sky-700">メルセデス・ベンツ W140 (Sクラス, 1991年発売)</h3>
+                    <p class="mb-2"><strong>概要:</strong> Sクラスの3代目。バブル期に計画されたフラッグシップ。セダンとクーペ（CLクラス）を展開。総生産約43万台。</p>
+                    <p class="mb-2"><strong>サッコの役割:</strong> 3代目のSクラス。車格肥大化に不満も最終デザインを統括。垂直的親和性と90年代の新潮流を融合。彼の哲学が試練に晒されたプロジェクト。</p>
+                    <p class="mb-2"><strong>設計思想:</strong> 「あらゆる面で他を凌駕する最高の車」。競争激化とレクサスLS400の登場が背景。技術・装備を詰め込み大型化・重量化。</p>
+                    <p class="mb-2"><strong>エクステリア:</strong> 圧倒的な存在感と高級感。当時最大級のボディサイズ。直線基調に丸みを帯びたパネル。二重構造ガラス、パーキングガイドポールが特徴。</p>
+                    <p class="mb-2"><strong>インテリア:</strong> 最高の豪華さと先進性。「走る豪華応接室」。ソフトクローズドア、パワーアシストドア、BOSEオーディオ、Sクラス初のサイドエアバッグも導入。</p>
+                    <p class="mb-2"><strong>技術的特徴:</strong> 「最後のコスト度外視」。メルセデス初の量産V12エンジン。アダプティブダンピングシステム（ADS）、車内LAN（CANバス）採用。</p>
+                    <p class="mb-2"><strong>市場評価:</strong> 賛否両論。技術的には圧倒的だが、巨体と重量が時代にそぐわないとの批判も。「工業技術の傲慢」と酷評される一方、「最高のSクラス」との声も。</p>
+                    <p class="text-sm text-gray-600 mt-1">【画像イメージ】W140型Sクラスの写真</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="philosophy" class="content-section bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold mb-4 text-slate-700">デザイン哲学：ブルーノ・サッコの思考</h2>
+            <p class="mb-6 text-lg leading-relaxed">
+                ブルーノ・サッコのデザインは、いくつかの核となる哲学に基づいていました。これらはメルセデス・ベンツの車に一貫したアイデンティティと時代を超越する価値を与えました。
+            </p>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-sky-600">「メルセデスはメルセデスらしく」</h3>
+                    <p class="leading-relaxed">サッコは、ブランドのアイデンティティを何よりも重視しました。「メルセデス・ベンツは常にメルセデス・ベンツらしくなければならない」という彼の言葉は有名です。流行に左右されず、どのモデルにも共通する顔つきやプロポーションのルールを定めることで、ブランドの信頼をデザイン面から支えました。これが「水平的親和性」の根幹です。</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-sky-600">タイムレスデザインへの信念</h3>
+                    <p class="leading-relaxed">短命な流行や奇抜なスタイルを嫌い、「10年20年経っても色褪せない車」を理想としました。これが「垂直的親和性」であり、モデルチェンジの際も急激な変化ではなく、前モデルの美点を引き継ぎつつ進化させることを目指しました。彼が手掛けたW126、W124、R129などは、その好例と言えるでしょう。</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-sky-600">機能と美の調和</h3>
+                    <p class="leading-relaxed">工学を学んだサッコは、機能に根ざした美しさを追求しました。デザインが車両性能や使い勝手と矛盾しないことを重視し、空力特性の改善や安全性の向上に資する形状を積極的に採用しました。例えば、ボディ下部のプロテクションモール（サッコ・プレート）は、見た目のアクセントだけでなく、実際のボディ保護にも貢献する「機能美」の現れです。</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-sky-600">チームとしてのデザイン</h3>
+                    <p class="leading-relaxed">サッコは自らを「オーケストラの指揮者」に例え、個人の名声よりもチームワークと集合知によるデザインプロセスを重視しました。多くのデザイナーが関与し、長期間かけて磨き上げられるメルセデスのデザインにおいて、彼は調整役として最終的な完成度を高めることに注力しました。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparison" class="content-section bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold mb-4 text-slate-700">モデル比較</h2>
+            <p class="mb-6 text-lg leading-relaxed">
+                ブルーノ・サッコが手がけた主要モデルの生産台数を比較してみましょう。各モデルが市場でどのように受け入れられたかの一端が見えてきます。
+                また、主要な特徴をまとめた表もご覧ください。
+            </p>
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-3 text-sky-600">生産台数比較グラフ</h3>
+                <div class="chart-container bg-gray-50 p-4 rounded-lg shadow">
+                    <canvas id="productionChart"></canvas>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold mb-3 text-sky-600">主要モデル特徴比較表</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">モデル</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">主な特徴</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">生産年 (開始)</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cd値 (代表値)</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">サッコの哲学</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap font-medium">W123</td>
+                                <td class="px-6 py-4 whitespace-normal text-sm">信頼性と耐久性の象徴、多様なボディ</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">1976</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">~0.40</td>
+                                <td class="px-6 py-4 whitespace-normal text-sm">伝統と現代性の調和、保守的進化</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap font-medium">W201 (190E)</td>
+                                <td class="px-6 py-4 whitespace-normal text-sm">初のコンパクト、5リンクサス、機能美</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">1982</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">0.33</td>
+                                <td class="px-6 py-4 whitespace-normal text-sm">水平的同質性、イノベーション凝縮</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap font-medium">W124</td>
+                                <td class="px-6 py-4 whitespace-normal text-sm">空力性能追求、4MATIC、Eクラスの祖</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">1984</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">0.28</td>
+                                <td class="px-6 py-4 whitespace-normal text-sm">垂直的親和性、タイムレスデザイン</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap font-medium">W140</td>
+                                <td class="px-6 py-4 whitespace-normal text-sm">フラッグシップ、V12、先進技術の集大成</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">1991</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">~0.31</td>
+                                <td class="px-6 py-4 whitespace-normal text-sm">最高の追求、威厳と先進性 (妥協も)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="legacy" class="content-section bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold mb-4 text-slate-700">後世への影響と継承</h2>
+            <p class="mb-6 text-lg leading-relaxed">
+                ブルーノ・サッコのデザイン哲学と彼が生み出した車両群は、メルセデス・ベンツ社内だけでなく、自動車業界全体、さらには異業種にまで広範な影響を与えました。
+            </p>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-sky-600">メルセデス・ベンツ社内での継承</h3>
+                    <p class="leading-relaxed">W201 (190E) のコンセプトは後継のCクラスに、W124の路線はEクラスに受け継がれました。W140の技術的成果や反省点は次世代Sクラス(W220)の開発に活かされました。サッコが最後に関与したSLK(R170)やCLK(W208)も、「統一性と革新性のバランス」という彼の遺産を示す好例です。</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-sky-600">自動車業界全体への影響</h3>
+                    <ul class="list-disc list-inside space-y-1 pl-4">
+                        <li><strong>ファミリールックとロングライフデザイン:</strong> 1980年代のメルセデスが示したラインナップ全体の調和は、BMWやアウディなど他ブランドにも影響を与え、モデル共通のデザインテーマ採用や、頻繁なフルモデルチェンジを避ける傾向を生みました。</li>
+                        <li><strong>具体的なデザイン要素:</strong> 樹脂製バンパーの一体造形やボディ下部のプロテクション（クラッディング）は広く普及しました。</li>
+                        <li><strong>空力デザインと安全設計:</strong> サッコ時代のメルセデス車が示した高い空力性能や、安全設計とデザインの融合は業界標準に影響を与えました。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-sky-600">異業種への影響</h3>
+                    <p class="leading-relaxed">レクサス初代LS (1989年) は、メルセデスのデザイン、特にW126や開発中のW140から多くを学んだとされています。これは、メルセデス・ベンツが世界の自動車メーカーからベンチマークとされていた証左です。</p>
+                </div>
+                <p class="mt-4 leading-relaxed">
+                    総じて、ブルーノ・サッコの功績は単に名車を生み出したことに留まらず、自動車デザインのあり方そのものに大きな足跡を残しました。彼の理念は、メルセデス・ベンツのDNAとして、そして高級車デザインの一つの規範として、今なお息づいています。
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-white text-center py-6 mt-12">
+        <p class="text-sm">&copy; 2024 メルセデス・ベンツ デザイン探訪. この内容は提供されたレポートに基づいています。</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const modelTabs = document.querySelectorAll('#modelTabs .tab-link');
+            const modelContents = document.querySelectorAll('#modelContentContainer .tab-content');
+
+            function setActiveSection(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+                navLinks.forEach(link => {
+                    link.classList.toggle('active-nav', link.dataset.target === targetId);
+                    link.classList.toggle('border-sky-500', link.dataset.target === targetId);
+                    link.classList.toggle('text-sky-500', link.dataset.target === targetId); // Active link color
+                    link.classList.toggle('border-transparent', link.dataset.target !== targetId);
+                });
+                window.scrollTo(0, 0); // Scroll to top on section change
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.dataset.target;
+                    setActiveSection(targetId);
+                });
+            });
+
+            function setActiveModelTab(targetId) {
+                modelContents.forEach(content => {
+                    content.classList.toggle('active', content.id === targetId);
+                });
+                modelTabs.forEach(tab => {
+                    tab.classList.toggle('active-tab', tab.dataset.modelTarget === targetId);
+                    tab.classList.toggle('border-sky-500', tab.dataset.modelTarget === targetId);
+                    tab.classList.toggle('text-sky-600', tab.dataset.modelTarget === targetId);
+                    tab.classList.toggle('border-transparent', tab.dataset.modelTarget !== targetId);
+                     tab.classList.remove('hover:text-gray-600', 'hover:border-gray-300');
+                    if (tab.dataset.modelTarget !== targetId) {
+                         tab.classList.add('hover:text-gray-600', 'hover:border-gray-300');
+                    }
+                });
+            }
+
+            modelTabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.dataset.modelTarget;
+                    setActiveModelTab(targetId);
+                });
+            });
+            
+            // Activate the first nav link and model tab by default
+            if (navLinks.length > 0) setActiveSection(navLinks[0].dataset.target);
+            if (modelTabs.length > 0) setActiveModelTab(modelTabs[0].dataset.modelTarget);
+
+
+            // Chart.js for Production Numbers
+            const ctx = document.getElementById('productionChart');
+            if (ctx) {
+                new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['W123', 'W201 (190E)', 'W124', 'W140'],
+                        datasets: [{
+                            label: '総生産台数 (万台)',
+                            data: [272, 187.9, 256, 43.27], // Approx values in 10,000s
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.7)', // blue-500
+                                'rgba(16, 185, 129, 0.7)', // green-500
+                                'rgba(239, 68, 68, 0.7)',  // red-500
+                                'rgba(245, 158, 11, 0.7)'  // yellow-500 (amber)
+                            ],
+                            borderColor: [
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(16, 185, 129, 1)',
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(245, 158, 11, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '生産台数 (万台)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'モデル'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false // Hiding legend as it's clear from dataset label
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y + ' 万台';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+```
+
+このHTMLコードは、以下の機能を含んでいます：
+
+1.  **レスポンシブレイアウト**: Tailwind CSSを使用し、様々なデバイスサイズに対応します。
+2.  **シングルページアプリケーション (SPA) 構造**: JavaScriptによるナビゲーションで、ページ遷移なしにコンテンツを切り替えます。
+3.  **タブレットコンテンツ**: モデル詳細セクション内では、各モデル（W123, W201, W124, W140）の情報をタブで切り替えて表示します。
+4.  **インタラクティブなチャート**: Chart.jsを使用し、「比較」セクションで各モデルの生産台数を棒グラフで表示します。
+5.  **情報アーキテクチャ**: レポートの内容を「概要」「デザイナー紹介」「モデル詳細」「デザイン哲学」「比較」「後世への影響」の主要セクションに再構成し、各セクションには導入文を設けています。
+6.  **スタイリング**: シンプルでクリーンなデザインを心がけ、指定されたカラーパレットのアイデア（ウォームニュートラルとアクセントカラー）を基にしています。
+7.  **必須コメント**: 指定されたプレースホルダーコメントをHTML内に含んでいます。
+
+このHTMLファイルをブラウザで開くと、インタラクティブなウェブアプリケーションとしてレポートの内容を閲覧できます。
+コンテンツは提供されたレポートから抽出・要約し、各セクションに配置しました。
+「【画像イメージ】」というテキストは、レポート内で画像が言及されていた箇所を示しています。実際の画像はSVGやラスター画像の使用制限のため含めていません。
+
+ご確認いただき、さらに調整が必要な点があればお知らせくだ
